@@ -291,6 +291,10 @@ func mapToSchema(ctx *schemaContext, mapType *ast.MapType) *apiext.JSONSchemaPro
 		valSchema = localNamedToSchema(ctx.ForInfo(&markers.TypeInfo{}), val)
 	case *ast.SelectorExpr:
 		valSchema = namedToSchema(ctx.ForInfo(&markers.TypeInfo{}), val)
+	case *ast.InterfaceType, *ast.MapType:
+		return &apiext.JSONSchemaProps{
+			Type: "object",
+		}
 	case *ast.ArrayType:
 		valSchema = arrayToSchema(ctx.ForInfo(&markers.TypeInfo{}), val)
 		if valSchema.Type == "array" && valSchema.Items.Schema.Type != "string" {
